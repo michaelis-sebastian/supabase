@@ -1,0 +1,14 @@
+.gradient-custom {
+    /* Fallback for older browsers */
+    background: #333; /* Dark gray */
+  
+    /* Gradient effect */
+    background: linear-gradient(to right, #333, #f2f2f2); /* Dark gray to light gray */
+  }
+  
+  /* Set the container background to transparent or a light color */
+  .container {
+    background: transparent; /* You can change this to your desired container background */
+  }
+  
+  
