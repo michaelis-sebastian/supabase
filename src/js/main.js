@@ -43,6 +43,10 @@ function successNotification(message, seconds = 0) {
       }, seconds * 1000);
     }
   }
+
+
+
+
   
   // Logout Function
   async function doLogout() {
@@ -61,6 +65,9 @@ function successNotification(message, seconds = 0) {
       // errorNotification("Logout Failed!", 15);
     }
   }
+
+
+  
   
   export { supabase, successNotification, errorNotification, doLogout };
 

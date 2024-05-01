@@ -49,7 +49,6 @@ async function populateCarousel() {
 
     // Fetch all shoes from Supabase
     const allShoes = await fetchAllShoes();
-
     // Loop through all shoes and populate the carousel
     for (const [index, shoe] of allShoes.entries()) {
         // Set image source and price from the 'shoe' table
@@ -64,124 +63,136 @@ async function populateCarousel() {
         }
 
         carouselItem.innerHTML = `
-            <img src="${imageUrl}" alt="${shoe.name}">
+            <img src="${imageUrl}" alt="${shoe.name}" data-shoe-i="${shoe.shoe_id}">
         `;
 
         // Append the carousel item to the carousel inner container
         carouselInner.appendChild(carouselItem);
     }
 }
-
-// Call the function to populate the carousel when the page is loaded
 populateCarousel();
-
-// let currentSlide = 0;
-// let passedImages = [];
-// let likedImages = [];
-// let carousel = document.getElementById('tinderCarousel');
-
-// // Function to add a liked or passed item to the table and save it to Supabase
-// async function addToTable(table, shoeId, isLiked) {
-//     try {
-//         // Create a promise to wait for the authentication state to be resolved
-//         const authStatePromise = new Promise((resolve) => {
-//             const authListener = supabase.auth.onAuthStateChange((event, session) => {
-//                 console.log('Authentication event:', event, 'Session:', session);
-//                 // Ensure the listener is called only once
-//                 if (authListener) {
-//                     authListener.data.unsubscribe();
-//                 }
-//                 resolve();
-//             }, { initial: false }); // Set initial to false to avoid an initial call
-//         });
-
-//         // Wait for the authentication state to be resolved
-//         await authStatePromise;
-
-//         // Check if the user is authenticated
-//         const user = supabase.auth.user;
-//         console.log('User:', user);
-
-//         if (!user) {
-//             console.error("User is not authenticated");
-//             return;
-//         }
-
-//         // Rest of the function...
-//     } catch (error) {
-//         console.error('General Error:', error.message);
-//     }
-// }
-
-
-// // // Function to hide a specific image
-// // function hideImage(shoeId) {
-// //     const image = document.getElementById(shoeId);
-
-// //     // Add logging to check if the element is found
-// //     if (!image) {
-// //         console.error(`Element with ID ${shoeId} not found`);
-// //         return;
-// //     }
-
-// //     image.classList.add('hidden'); // Add the hidden class for transition
-// // }
-
-// // Function to handle the pass button click
-// document.querySelector('#btn-pass').addEventListener('click', async function () {
-//     const shoeId = "image" + (currentSlide + 1);
-
-//     if (!likedImages.includes(shoeId) && !passedImages.includes(shoeId)) {
-//         passedImages.push(shoeId);
-//         // hideImage(shoeId);
-
-//         // Remove the passed image from the carousel
-//         $(carousel).carousel('next');
-
-//         // Check if there are no more images
-//         if (currentSlide === (carousel.querySelectorAll('.carousel-item').length - 1)) {
-//             showEndMessage();
-//         }
-
-//         // Add the passed item to the 'shoes_passed' table on Supabase
-//         await addToTable('shoes_passed', shoeId, false);
+// supabase.auth.onAuthStateChange((event, session) => {
+//     if (event === 'SIGNED_IN') {
+//         // User is signed in
+//         // console.log("User is signed in. Session:", session);
+//         const userId = session.user.id;
+//         // console.log("User ID:", userId);
+//     } else if (event === 'SIGNED_OUT') {
+//         // User is signed out
+//         console.log("User is signed out.");
 //     }
 // });
 
-// // Function to handle the like button click
-// document.querySelector('#btn-like').addEventListener('click', async function () {
-//     const shoeId = "image" + (currentSlide + 1);
+async function saveShoeToPassed(shoeId) {
+    try {
+        const existingRow = await supabase.
+        from('shoes_passed').
+        select('*').
+        eq('shoe_id', shoeId);
+        
+        if (existingRow) {
+            console.log("Already Exist");
+            
+            // await supabase.from('shoes_liked').delete().eq('shoe_id', shoeId);
+            // console.log(`Existing row with shoe_id ${shoeId} deleted from 'shoes_liked' table.`);
+        }
+            const { data, error } = await supabase.
+            from('shoes_passed').
+            insert([{ 'shoe_id': shoeId }]);
+        console.log("Shoe saved to 'shoes_liked' table:", data);
 
-//     if (!likedImages.includes(shoeId) && !passedImages.includes(shoeId)) {
-//         likedImages.push(shoeId);
-//         // hideImage(shoeId);
 
-//         // Remove the liked image from the carousel
-//         $(carousel).carousel('next');
+        
+        const currentCarouselItem = document.querySelector('.carousel-item.active');
+        currentCarouselItem.classList.remove('active');
+        const nextCarouselItem = currentCarouselItem.nextElementSibling;
+        if (nextCarouselItem) {
+            nextCarouselItem.classList.add('active');
+        } else {
+            // const firstCarouselItem = document.querySelector('.carousel-item');
+            // firstCarouselItem.classList.add('active');
+            console.log('End of carousel reached.');
+        }
 
-//         // Check if there are no more images
-//         if (currentSlide === (carousel.querySelectorAll('.carousel-item').length - 1)) {
-//             showEndMessage();
-//         }
 
-//         // Add the liked item to the 'shoes_liked' table on Supabase
-//         await addToTable('shoes_liked', shoeId, true);
-//     }
-// });
 
-// // Function to show a message or static image when there are no more images
-// function showEndMessage() {
-//     const staticImageId = 'staticImage';
-//     if (document.getElementById(staticImageId)) {
-//         // Show the static image
-//         const activeItem = carousel.querySelector('.carousel-item.active');
-//         activeItem.classList.remove('active');
-//         activeItem.classList.add('hidden');
-//         document.getElementById(staticImageId).classList.add('active');
-//     }
-// }
+    } catch (error) {
+        console.error("Error saving shoe to 'shoes_passed' table:", error.message);
+    }
+}
 
-// // Track the current active slide
-// carousel.addEventListener('slid.bs.carousel', function () {
-//     currentSlide = Array.from(carousel.querySelectorAll('.carousel-item')).indexOf(carousel.querySelector('.carousel-item.active'));
-// });
+async function saveShoeToLiked(shoeId) {
+    try {
+        const existingRow = await supabase.
+        from('shoes_liked').
+        select('*').
+        eq('shoe_id', shoeId);
+        // 'user_id',userId,
+        console.log(existingRow.data);
+        if (existingRow) {
+            console.log("Already Exist");
+            
+            // await supabase.from('shoes_liked').delete().eq('shoe_id', shoeId);
+            // console.log(`Existing row with shoe_id ${shoeId} deleted from 'shoes_liked' table.`);
+        }
+        // else{
+            const { data, error } = await supabase.
+            from('shoes_liked').
+            insert([{ 'shoe_id': shoeId }]);
+        // }
+    //     console.log("Shoe saved to 'shoes_liked' table:", data);
+
+
+        const currentCarouselItem = document.querySelector('.carousel-item.active');
+        currentCarouselItem.classList.remove('active');
+        const nextCarouselItem = currentCarouselItem.nextElementSibling;
+        if (nextCarouselItem) {
+            nextCarouselItem.classList.add('active');
+        } else {
+            // const firstCarouselItem = document.querySelector('.carousel-item');
+            // firstCarouselItem.classList.add('active');
+            console.log('End of carousel reached.');
+        }
+
+
+    } catch (error) {
+        console.error("Shoe deleted to 'shoes_liked' table:", error.message);
+    }
+}
+
+async function handleLikeButtonClick() {
+    const shoeId = document.querySelector('.carousel-item.active img').getAttribute('data-shoe-i');
+    if (shoeId) {
+        console.log(shoeId);
+    } else {
+        console.log('Kulurom kah');
+    }
+
+    if (!shoeId) {
+        console.error("No shoe_id found for the active item.");
+        return;
+    }
+    await saveShoeToLiked(shoeId);
+
+    $('#tinderCarousel').slick('slickNext');
+}
+
+async function handlePassButtonClick() {
+    const shoeId = document.querySelector('.carousel-item.active img').getAttribute('data-shoe-i');
+    if (shoeId) {
+        console.log(shoeId);
+    } else {
+        console.log('Kulurom kah');
+    }
+ 
+    if (!shoeId) {
+        console.error("No shoe_id found for the active item.");
+        return;
+    }
+
+    await saveShoeToPassed(shoeId);
+    $('#tinderCarousel').slick('slickNext');
+}
+
+document.getElementById('btn-like').addEventListener('click', handleLikeButtonClick);
+document.getElementById('btn-pass').addEventListener('click', handlePassButtonClick);
