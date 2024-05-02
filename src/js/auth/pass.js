@@ -1,12 +1,12 @@
 import { supabase } from "../main";
 
-async function fetchAllShoesLikes() {
+async function fetchAllShoesPasses() {
     try {
         // Fetch all liked shoes from the 'shoes_liked' table
-        const { data: likedShoes, error: likedError } = await supabase
+        const { data: passedShoes, error: likedError } = await supabase
         
-        .from('shoes_liked')
-        .select('like_id, user_id, shoe_id, is_favorite');
+        .from('shoes_passed')
+        .select('pass_id, shoe_id, is_favorite');
         if (likedError) {
             console.error(likedError.message);
             return [];
@@ -21,13 +21,13 @@ async function fetchAllShoesLikes() {
             return [];
         }
 
-        const combinedData = likedShoes.map(likedShoe => {
-            const matchingShoe = shoesData.find(shoe => shoe.shoe_id === likedShoe.shoe_id);
+        const combinedData = passedShoes.map(passedShoe => {
+            const matchingShoe = shoesData.find(shoe => shoe.shoe_id === passedShoe.shoe_id);
             if (matchingShoe) {
                 return {
-                    like_id: likedShoe.like_id,
-                    user_id: likedShoe.user_id,
-                    is_favorite: likedShoe.is_favorite,
+                    pass_id: passedShoe.pass_id,
+                    // user_id: passedShoe.user_id,
+                    is_favorite: passedShoe.is_favorite,
                     shoe_id: matchingShoe.shoe_id,
                     name: matchingShoe.name,
                     price: matchingShoe.price,
@@ -50,13 +50,13 @@ async function populateCards() {
     const CardoMerkado = document.getElementById('CardDInner');
 
     // Fetch all shoes from Supabase
-    const allShoesLikes = await fetchAllShoesLikes();
+    const allShoesPasses = await fetchAllShoesPasses();
 
     // console.log(allShoesLikes);
-    for (const [index, sld] of allShoesLikes.entries()) {
+    for (const [index, sld] of allShoesPasses.entries()) {
         const shoe_id = sld.shoe_id
-        const like_id = sld.like_id;
-        const user_id = sld.user_id;
+        const pass_id = sld.pass_id;
+        // const user_id = sld.user_id;
         const is_favorite = sld.is_favorite;
         
         const sh_name = sld.name;

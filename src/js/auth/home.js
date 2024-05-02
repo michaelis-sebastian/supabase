@@ -1,87 +1,5 @@
 import { supabase } from "../main";
 
-// // Add the event listener at the beginning
-// supabase.auth.onAuthStateChange((event, session) => {
-//     console.log('Authentication event:', event, 'Session:', session);
-// });
-
- // Check the user status after the login attempt
-//  console.log('User after login attempt:', supabase.auth.user);
-
-// // Check if the user is authenticated
-// try {
-// const user = supabase.auth.user;
-// console.log('User:', user);
-
-// if (!user) {
-//     console.error("User is not authenticated");
-// } else {
-//     // Rest of the function...
-// }
-// } catch (error) {
-// console.error('General Error:', error.message);
-// }
-
-
-
-// Function to fetch all shoes from Supabase
-async function fetchAllShoes() {
-    try {
-        const { data: allShoes, error } = await supabase
-            .from('shoe')
-            .select('shoe_id, name, price, image, description');
-
-        if (error) {
-            console.error(error.message);
-            return [];
-        }
-
-        return allShoes;
-    } catch (error) {
-        console.error('General Error:', error.message);
-        return [];
-    }
-}
-
-// Function to dynamically populate the carousel with all shoes
-async function populateCarousel() {
-    const carouselInner = document.getElementById('carouselInner');
-
-    // Fetch all shoes from Supabase
-    const allShoes = await fetchAllShoes();
-    // Loop through all shoes and populate the carousel
-    for (const [index, shoe] of allShoes.entries()) {
-        // Set image source and price from the 'shoe' table
-        const imageUrl = shoe.image;  // Assuming you have the full image URL in the 'image' column
-        const price = shoe.price;
-
-        // Create a carousel item for each shoe
-        const carouselItem = document.createElement('div');
-        carouselItem.classList.add('carousel-item');
-        if (index === 0) {
-            carouselItem.classList.add('active'); // Set the first item as active
-        }
-
-        carouselItem.innerHTML = `
-            <img src="${imageUrl}" alt="${shoe.name}" data-shoe-i="${shoe.shoe_id}">
-        `;
-
-        // Append the carousel item to the carousel inner container
-        carouselInner.appendChild(carouselItem);
-    }
-}
-populateCarousel();
-// supabase.auth.onAuthStateChange((event, session) => {
-//     if (event === 'SIGNED_IN') {
-//         // User is signed in
-//         // console.log("User is signed in. Session:", session);
-//         const userId = session.user.id;
-//         // console.log("User ID:", userId);
-//     } else if (event === 'SIGNED_OUT') {
-//         // User is signed out
-//         console.log("User is signed out.");
-//     }
-// });
 
 async function saveShoeToPassed(shoeId) {
     try {
@@ -91,15 +9,15 @@ async function saveShoeToPassed(shoeId) {
         eq('shoe_id', shoeId);
         
         if (existingRow) {
-            console.log("Already Exist");
-            
             // await supabase.from('shoes_liked').delete().eq('shoe_id', shoeId);
             // console.log(`Existing row with shoe_id ${shoeId} deleted from 'shoes_liked' table.`);
         }
             const { data, error } = await supabase.
             from('shoes_passed').
             insert([{ 'shoe_id': shoeId }]);
-        console.log("Shoe saved to 'shoes_liked' table:", data);
+
+
+        console.log("Shoe saved to 'shoes_passed' ID:", shoeId);
 
 
         
@@ -128,9 +46,9 @@ async function saveShoeToLiked(shoeId) {
         select('*').
         eq('shoe_id', shoeId);
         // 'user_id',userId,
-        console.log(existingRow.data);
+        // console.log(existingRow.data);
         if (existingRow) {
-            console.log("Already Exist");
+            // console.log("Already Exist");
             
             // await supabase.from('shoes_liked').delete().eq('shoe_id', shoeId);
             // console.log(`Existing row with shoe_id ${shoeId} deleted from 'shoes_liked' table.`);
@@ -140,7 +58,7 @@ async function saveShoeToLiked(shoeId) {
             from('shoes_liked').
             insert([{ 'shoe_id': shoeId }]);
         // }
-    //     console.log("Shoe saved to 'shoes_liked' table:", data);
+        console.log("Shoe saved to 'shoes_liked' ID:", shoeId);
 
 
         const currentCarouselItem = document.querySelector('.carousel-item.active');
@@ -162,11 +80,7 @@ async function saveShoeToLiked(shoeId) {
 
 async function handleLikeButtonClick() {
     const shoeId = document.querySelector('.carousel-item.active img').getAttribute('data-shoe-i');
-    if (shoeId) {
-        console.log(shoeId);
-    } else {
-        console.log('Kulurom kah');
-    }
+    // if (shoeId) {console.log(shoeId);} else {console.log('Kulurom kah');}
 
     if (!shoeId) {
         console.error("No shoe_id found for the active item.");
@@ -174,16 +88,12 @@ async function handleLikeButtonClick() {
     }
     await saveShoeToLiked(shoeId);
 
-    $('#tinderCarousel').slick('slickNext');
+    // $('#tinderCarousel').slick('slickNext');
 }
 
 async function handlePassButtonClick() {
     const shoeId = document.querySelector('.carousel-item.active img').getAttribute('data-shoe-i');
-    if (shoeId) {
-        console.log(shoeId);
-    } else {
-        console.log('Kulurom kah');
-    }
+    // if (shoeId) {console.log(shoeId);} else {console.log('Kulurom kah');}
  
     if (!shoeId) {
         console.error("No shoe_id found for the active item.");
@@ -191,7 +101,7 @@ async function handlePassButtonClick() {
     }
 
     await saveShoeToPassed(shoeId);
-    $('#tinderCarousel').slick('slickNext');
+    // $('#tinderCarousel').slick('slickNext');
 }
 
 document.getElementById('btn-like').addEventListener('click', handleLikeButtonClick);

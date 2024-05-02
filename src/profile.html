@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
     <link rel="stylesheet" href="./css/style.css">
+    <script type="module" src="./js/auth/file.js"></script>
     <style>
         /* body {
             background-image: url('assets/imgs/main2.jpg');
@@ -41,7 +42,7 @@
 
     <img id="background-image" src="assets/imgs/main2.jpg" alt="Your Image Alt Text">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light-purple mt-0">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light-purple mt-0 pl-3">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -74,32 +75,17 @@
     <div class="container">
         <div id="user-profile" class="profile-info">
             <h1>User Profile</h1>
-            <div id="username"></div>
-            <div id="password"></div>
+            <div id="id_qrcode"></div>
+             
             <br>
-            <div id="firstname"></div>
-            <div id="lastname"></div>
+            <p class="fw-bold fs-1 d-inline" id="lastname"></p><p class="fw-bold fs-1 d-inline">, </p> 
+            <p class="fw-bold fs-1 d-inline" id="firstname"></p>
         </div>
     </div>
-
-    <script>
-        const currentUserData = JSON.parse(localStorage.getItem("current-user"));
-
-        if (currentUserData) {
-            document.getElementById("username").innerText = "Email: " + currentUserData.username;
-            document.getElementById("password").innerText = "Password: " + currentUserData.password;
-            document.getElementById("firstname").innerText = "First Name: " + currentUserData.firstname;
-            document.getElementById("lastname").innerText = "Last Name: " + currentUserData.lastname;
-        } else {
-            alert("User data not found. Please log in.");
-            window.location.href = "login.html";
-        }
-    </script>
-
-<script type="module" src="./js/main.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
- <script src="./js/auth/register.js" type="module"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script type="module" src="./js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- <script src="./js/auth/register.js" type="module"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
