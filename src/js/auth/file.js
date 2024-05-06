@@ -1,5 +1,12 @@
 import { supabase } from "../main";
-import QRCode from 'qrcode'
+import QRCode, { create } from 'qrcode'
+
+// import {useEffect, useState} from "react";
+
+// import { createClient } from "@supabase/supabase-js";
+// import {v4 as uuidv4} from 'uuid';
+
+
 // 
 //import inquirer from "inquirer";
 // import qr from "qr-image";
@@ -32,6 +39,8 @@ supabase.auth.onAuthStateChange((event, session) => {
         // console.log("User ID:", userId);
         // const userInfo = loginUser(userId);
         loginUser(userId);
+
+
     } else if (event === 'SIGNED_OUT') {
         // User is signed out
         console.log("User is signed out.");
@@ -72,3 +81,44 @@ async function loginUser(userId) {
     }
 }
 // loginUser();
+
+function myFunction(){
+    const userId = supabase.auth.onAuthStateChange((event, session) => {
+        console.log( session.user.id);
+    
+        async function uploadImage(e){
+            let file = e.target.files[0];
+
+            const { data, error } = await supabase
+            .storage
+            .from('profiles')
+            .upload(session.user.id + "/" + uuidv4, file)
+
+            if(data){
+                getMedia();
+            } else {
+                console.log(error);
+            }
+        }
+
+        async function getMedia(){
+
+            const { data, error } = await supabase.storage.from('profiles').list(session.user.id + '/', {
+                limit: 10,
+                offset: 0,
+                sortBy: {
+                    column: 'name', 
+                    order: 'asc'
+                }
+            });
+
+            if(data){
+                setMedia(data);
+            } else {
+                console.log(71, error);
+            }
+        }
+    });
+
+}
+// App()
