@@ -61,7 +61,7 @@ async function loginUser(userId) {
         // const id_qrcode = document.getElementById('id_qrcode');
         const firstname = document.getElementById('firstname');
         const lastname = document.getElementById('lastname');
-        const profile = document.getElementById('profile');
+        // const profile = document.getElementById('profile');
         if (userInfo) {
 
             // QRCode.toString(userInfo.data[0].user_id, {type:'terminal'}, function (err, url) {
@@ -70,7 +70,7 @@ async function loginUser(userId) {
             // })
             firstname.innerText = userInfo.data[0].firstname;
             lastname.innerText = userInfo.data[0].lastname;
-            profile.innerHTML = `<img class="pt-3 mx-auto" src="${userInfo.data[0].profile}" alt="${userInfo.data[0].user_id}" style="width: 18rem; height: 18rem;"></img>`;
+            // profile.innerHTML = `<img class="pt-3 mx-auto" src="${userInfo.data[0].profile}" alt="${userInfo.data[0].user_id}" style="width: 18rem; height: 18rem;"></img>`;
         } else {
             console.error('User info not found.');
         }
