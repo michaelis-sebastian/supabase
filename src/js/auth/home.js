@@ -1,5 +1,53 @@
 import { supabase } from "../main";
 
+async function fetchAllShoes() {
+    try {
+        const { data: allShoes, error } = await supabase
+            .from('shoe')
+            .select('shoe_id, name, price, image, description');
+
+        if (error) {
+            console.error(error.message);
+            return [];
+        }
+
+        return allShoes;
+    } catch (error) {
+        console.error('General Error:', error.message);
+        return [];
+    }
+}
+
+// Function to dynamically populate the carousel with all shoes
+async function populateCarousel() {
+    const carouselInner = document.getElementById('carouselInner');
+
+    // Fetch all shoes from Supabase
+    const allShoes = await fetchAllShoes();
+    // Loop through all shoes and populate the carousel
+    for (const [index, shoe] of allShoes.entries()) {
+        // Set image source and price from the 'shoe' table
+        const imageUrl = shoe.image;  // Assuming you have the full image URL in the 'image' column
+        const price = shoe.price;
+
+        // Create a carousel item for each shoe
+        const carouselItem = document.createElement('div');
+        carouselItem.classList.add('carousel-item');
+        if (index === 0) {
+            carouselItem.classList.add('active'); // Set the first item as active
+        }
+
+        carouselItem.innerHTML = `
+            <img src="${imageUrl}" alt="${shoe.name}" data-shoe-i="${shoe.shoe_id}">
+        `;
+
+        // Append the carousel item to the carousel inner container
+        carouselInner.appendChild(carouselItem);
+    }
+}
+populateCarousel();
+
+
 
 async function saveShoeToPassed(shoeId) {
     try {

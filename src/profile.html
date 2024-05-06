@@ -75,11 +75,15 @@
     <div class="container">
         <div id="user-profile" class="profile-info">
             <h1>User Profile</h1>
-            <div id="id_qrcode"></div>
-             
+            <div class="m-auto" id="profile" style="width: 20rem; height: 20rem;"></div>
+            <!-- <input type="file" accept="image/*" (change)="onImageSelected($event)"> -->
             <br>
-            <p class="fw-bold fs-1 d-inline" id="lastname"></p><p class="fw-bold fs-1 d-inline">, </p> 
-            <p class="fw-bold fs-1 d-inline" id="firstname"></p>
+            <p class="fw-bold fs-1 d-inline" id="firstname"></p> 
+            <p class="fw-bold fs-1 d-inline">    </p> 
+            <p class="fw-bold fs-1 d-inline" id="lastname"></p>
+            <!-- <br> -->
+            <div class="mx-auto" id="id_qrcode" style="width: 20rem; height: 20rem;"></div>
+             
         </div>
     </div>
     <script type="module" src="./js/main.js"></script>
