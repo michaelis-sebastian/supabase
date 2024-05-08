@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <>
+  <head>
     <meta charset="UTF-8" />
     <title>Awesome Capacitor App</title>
     <meta
@@ -25,13 +25,14 @@
     <meta name="theme-color" content="#31d53d" />
 
     <script src="./js/auth/register.js" type="module"></script>
-    <link rel="stylesheet" href="./css/register.css">
+    <link rel="stylesheet" href="./css/style3.css">
   </head>
   <body>
+    <img id="background-image" src="./assets/imgs/login-bg.png" alt="Your Image Alt Text">
     <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark fixed-top">
+    <!-- <nav class="navbar navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Sample App</a>
+        <a class="navbar-brand" href="#">Registration</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -73,16 +74,16 @@
           </div>
         </div>
       </div>
-    </nav>
+    </nav> -->
     <!-- End Navbar -->
 
     <br />
 
     <!-- Container -->
-    <div class="container mt-5">
-      <div class="row">
+    <div class="container mt-5 ">
+      <div class="row mt-5">
         <div class="col-sm-12">
-          <h1 class="text-center">Registration</h1>
+          <!-- <h1 class="text-center text-primary">Registration</h1> -->
           <hr />
 
           <!-- Alert Notification -->
@@ -95,80 +96,82 @@
             <div class="form-floating mb-3">
               <input
                 type="text"
-                class="form-control"
+                class="form-control opacity-25 bg-dark text-white"
                 name="firstname"
                 id="firstname"
                 placeholder="Firstname"
                 required
               />
-              <label for="floatingInput">Firstname</label>
+              <label for="floatingInput" class="text-secondary">Firstname</label>
             </div>
 
             <!-- Lastname Field -->
             <div class="form-floating mb-3">
               <input
                 type="text"
-                class="form-control"
+                class="form-control opacity-25 bg-dark text-white"
                 name="lastname"
                 id="lastname"
                 placeholder="Lastname"
                 required
               />
-              <label for="floatingInput">Lastname</label>
+              <label for="floatingInput" class="text-secondary">Lastname</label>
             </div>
 
             <!-- Email Field -->
             <div class="form-floating mb-3">
               <input
                 type="email"
-                class="form-control"
+                class="form-control opacity-25 bg-dark text-white"
                 name="email"
                 id="email"
                 placeholder="Email Address"
                 required
               />
-              <label for="floatingInput">Email Address</label>
+              <label for="floatingInput" class="text-secondary">Email Address</label>
             </div>
 
             <!-- Password Field -->
             <div class="form-floating mb-3">
               <input
                 type="password"
-                class="form-control"
+                class="form-control opacity-25 bg-dark text-primary"
                 name="password"
                 id="password"
                 placeholder="Password"
                 required
               />
-              <label for="floatingPassword">Password</label>
+              <label for="floatingPassword" class="text-secondary">Password</label>
             </div>
 
             <!-- Password Confirmation Field -->
             <div class="form-floating mb-3">
               <input
                 type="password"
-                class="form-control"
+                class="form-control opacity-25 bg-dark text-white"
                 name="password_confirmation"
                 id="password_confirmation"
                 placeholder="Password Confirmation"
                 required
               />
-              <label for="floatingPassword">Password Confirmation</label>
+              <label for="floatingPassword" class="text-secondary">Password Confirmation</label>
             </div>
 
             <!-- Submit Button -->
             <hr />
-            <button
-              class="btn btn-primary w-100 mb-3 d-flex justify-content-center align-items-center"
-              type="submit"
-            >
-              Register
-            </button>
-
+            <div class="d-flex flex-row-reverse">
+              <button
+                class="btn btn-primary w-25 mb-3 d-flex justify-content-center align-items-center"
+                type="submit"
+                style="background-color: blueviolet;"
+              >
+                Register
+              </button>
+            </div>
             <br />
-            <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-center text-primary fw-bold">
               Already have an account?
-              <a href="./index.html" class="ms-2 fw-bold">Sign In</a>
+              <a href="./index.html" class="ms-2 fw-bold" style="color: deeppink;">Sign In</a>
             </div>
           </form>
           <!-- End Form -->
